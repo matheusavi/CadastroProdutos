@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  cadastroproduto.api.principal:
+    image: ${DOCKER_REGISTRY-}cadastroprodutoapiprincipal
+    build:
+      context: .
+      dockerfile: CadastroProduto.Api.Principal/Dockerfile
+
+  cadastroprodutos.api:
+    image: ${DOCKER_REGISTRY-}cadastroprodutosapi
+    build:
+      context: .
+      dockerfile: CadastroProdutos.Api/Dockerfile
+
