@@ -1,8 +1,16 @@
 version: '3.4'
 
+networks:
+    dockerapi-dev:
+        driver: bridge
+    mongo-compose-network:
+      driver: bridge
+
 services:
   cadastroproduto.api.principal:
     image: ${DOCKER_REGISTRY-}cadastroprodutoapiprincipal
+    depends_on:
+        - "postgres_image"
     build:
       context: .
       dockerfile: CadastroProduto.Api.Principal/Dockerfile
@@ -13,3 +21,49 @@ services:
       context: .
       dockerfile: CadastroProdutos.Api/Dockerfile
 
+  postgres_image:
+    image: postgres:latest
+    ports:
+        - "5432"
+    restart: always
+    volumes:
+        - db_volume:/var/lib/postgresql/data
+    environment:
+        POSTGRES_USER: "cadastroproduto"
+        POSTGRES_PASSWORD: "cadastroproduto123"
+        POSTGRES_DB: "cadastroproduto"
+
+  rabbitmq:
+    image: 'docker.io/bitnami/rabbitmq:3.8-debian-10'
+    ports:
+      - '4369:4369'
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+    volumes:
+      - 'rabbitmq_data:/bitnami'
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongodb_data_container:/data/db
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+
+
+volumes:
+  db_volume:
+  rabbitmq_data:
+    driver: local
+  mongodb_data_container:
