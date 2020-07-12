@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CadastroProduto.Api.Principal</name>
+    </assembly>
+    <members>
+        <member name="T:CadastroProduto.Api.Principal.Controllers.ProdutoController">
+            <summary>
+            CRUD de produtos
+            </summary>
+        </member>
+        <member name="M:CadastroProduto.Api.Principal.Controllers.ProdutoController.#ctor(MediatR.IMediator,CadastroProduto.CQS.IProdutoQueries,Microsoft.Extensions.Logging.ILogger{CadastroProduto.Api.Principal.Controllers.ProdutoController})">
+            <summary>
+            Constrói um controller de produtos
+            </summary>
+            <param name="mediator"></param>
+            <param name="queries"></param>
+            <param name="logger"></param>
+        </member>
+        <member name="M:CadastroProduto.Api.Principal.Controllers.ProdutoController.GetProduto(System.Int64)">
+            <summary>
+            Obter um produto por Id
+            </summary>
+            <param name="id" example="1">Id do produto</param>
+            <response code="200">Produto encontrado</response>
+            <response code="404">Produto não encontrado</response>
+            <response code="500">Ocorreu um erro ao encontrar o produto</response>
+            <returns>O produto</returns>
+        </member>
+        <member name="M:CadastroProduto.Api.Principal.Controllers.ProdutoController.PutProduto(System.Int64,CadastroProduto.CQS.AtualizarProdutoCommand)">
+            <summary>
+            Atualiza um produto
+            </summary>
+            <param name="id" example="1">Id do produto</param>
+            <param name="request"></param>
+            <response code="204">Produto atualizado</response>
+            <response code="400">Produto está inválido</response>
+            <response code="404">Produto não encontrado</response>
+            <response code="500">Ocorreu um erro atualizando o produto</response>
+            <returns>O produto</returns>
+        </member>
+        <member name="M:CadastroProduto.Api.Principal.Controllers.ProdutoController.PostProduto(CadastroProduto.CQS.CriarProdutoCommand)">
+            <summary>
+            Criar um produto
+            </summary>
+            <response code="201">Produto criado</response>
+            <response code="400">Produto está inválido</response>
+            <response code="500">Ocorreu um erro ao criar o produto</response>
+            <returns>O produto com seu id</returns>
+        </member>
+        <member name="M:CadastroProduto.Api.Principal.Controllers.ProdutoController.DeleteProduto(System.Int64)">
+            <summary>
+            Deletar um produto
+            </summary>
+            <param name="id" example="1">O id do produto</param>
+            <response code="200">Produto deletado</response>
+            <response code="404">Produto não encontrado</response>
+            <response code="500">Ocorreu um erro ao deletar o produto</response>
+            <returns>O produto</returns>
+        </member>
+    </members>
+</doc>

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CadastroProduto.Api.Principal
 {
-    public class Program
+    internal class Program
     {
         public static void Main(string[] args)
         {

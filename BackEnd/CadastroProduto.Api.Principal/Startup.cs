@@ -1,19 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using AutoMapper;
+using CadastroProduto.Application;
+using CadastroProduto.CQS;
+using CadastroProduto.Domain;
+using CadastroProduto.Infra;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace CadastroProduto.Api.Principal
 {
-    public class Startup
+    internal class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -22,15 +26,37 @@ namespace CadastroProduto.Api.Principal
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+
+            services.AddDbContext<CadastroProdutoContext>(options => options.UseNpgsql(Configuration["ConnectionString"]));
+
+            services.AddAutoMapper(x => x.CreateMap<Produto, ProdutoDto>(), AppDomain.CurrentDomain.GetAssemblies());
+            services.AddMediatR(typeof(AtualizarProdutoCommandHandler).GetTypeInfo().Assembly);
+
+
+            services.AddScoped<IProdutoQueries, ProdutoQueries>();
+            services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<ProdutoCommandValidator>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cadastro de produtos", Version = "v1" });
+                var filePath = Path.Combine(AppContext.BaseDirectory, "CadastroProduto.Api.Principal.xml");
+                c.IncludeXmlComments(filePath);
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetService<CadastroProdutoContext>();
+                context.Database.Migrate();
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -45,6 +71,14 @@ namespace CadastroProduto.Api.Principal
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.RoutePrefix = "";
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cadastro de produto");
             });
         }
     }
