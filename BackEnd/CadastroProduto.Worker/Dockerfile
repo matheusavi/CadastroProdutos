@@ -6,6 +6,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["CadastroProduto.Worker/CadastroProduto.Worker.csproj", "CadastroProduto.Worker/"]
+COPY ["CadastroProduto.CQS/CadastroProduto.CQS.csproj", "CadastroProduto.CQS/"]
 RUN dotnet restore "CadastroProduto.Worker/CadastroProduto.Worker.csproj"
 COPY . .
 WORKDIR "/src/CadastroProduto.Worker"

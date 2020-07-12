@@ -1,4 +1,6 @@
-﻿namespace CadastroProduto.CQS
+﻿using System;
+
+namespace CadastroProduto.CQS
 {
     public class ProdutoDto
     {
@@ -6,5 +8,6 @@
         public string Nome { get; set; }
         public decimal Preco { get; set; }
         public long Estoque { get; set; }
+        public Guid Guid { get; set; }
     }
 }

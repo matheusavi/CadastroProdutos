@@ -1,5 +1,6 @@
 ﻿using CadastroProduto.CQS;
 using FluentValidation;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ namespace CadastroProduto.Api.Principal.Controllers
         private readonly IMediator _mediator;
         private readonly IProdutoQueries _queries;
         private readonly ILogger<ProdutoController> _logger;
+        private readonly IPublishEndpoint _publishEndpoint;
 
 
         /// <summary>
@@ -31,11 +33,13 @@ namespace CadastroProduto.Api.Principal.Controllers
         public ProdutoController(
             IMediator mediator,
             IProdutoQueries queries,
-            ILogger<ProdutoController> logger)
+            ILogger<ProdutoController> logger,
+            IPublishEndpoint publishEndpoint)
         {
             _mediator = mediator;
             _queries = queries;
             _logger = logger;
+            _publishEndpoint = publishEndpoint;
         }
 
         /// <summary>
@@ -54,6 +58,7 @@ namespace CadastroProduto.Api.Principal.Controllers
         {
             try
             {
+                await _publishEndpoint.Publish<ProdutoCriado>(new { Nome = "Nome", Preco = 1, Estoque = 1, Guid = Guid.NewGuid() });
                 var produto = await _queries.FindAsync(id);
 
                 if (produto == null)

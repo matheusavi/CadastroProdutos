@@ -3,6 +3,7 @@ using CadastroProduto.Application;
 using CadastroProduto.CQS;
 using CadastroProduto.Domain;
 using CadastroProduto.Infra;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,6 +48,23 @@ namespace CadastroProduto.Api.Principal
                 var filePath = Path.Combine(AppContext.BaseDirectory, "CadastroProduto.Api.Principal.xml");
                 c.IncludeXmlComments(filePath);
             });
+
+            services.AddMassTransit(x =>
+            {
+                //x.AddBus(k =>
+                // Bus.Factory.CreateUsingRabbitMq(j =>
+                //    {
+                //        j.Host("localhost", y =>
+                //        {
+                //            y.Username("test");
+                //            y.Password("test");
+                //        });
+                //    })
+                //);
+                x.UsingRabbitMq();
+            });
+
+            services.AddMassTransitHostedService();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

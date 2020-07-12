@@ -9,7 +9,7 @@
             CRUD de produtos
             </summary>
         </member>
-        <member name="M:CadastroProduto.Api.Principal.Controllers.ProdutoController.#ctor(MediatR.IMediator,CadastroProduto.CQS.IProdutoQueries,Microsoft.Extensions.Logging.ILogger{CadastroProduto.Api.Principal.Controllers.ProdutoController})">
+        <member name="M:CadastroProduto.Api.Principal.Controllers.ProdutoController.#ctor(MediatR.IMediator,CadastroProduto.CQS.IProdutoQueries,Microsoft.Extensions.Logging.ILogger{CadastroProduto.Api.Principal.Controllers.ProdutoController},MassTransit.IPublishEndpoint)">
             <summary>
             Constrói um controller de produtos
             </summary>

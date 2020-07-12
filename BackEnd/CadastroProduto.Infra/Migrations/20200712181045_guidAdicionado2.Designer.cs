@@ -3,15 +3,17 @@ using System;
 using CadastroProduto.Infra;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CadastroProduto.Infra.Migrations
 {
     [DbContext(typeof(CadastroProdutoContext))]
-    partial class CadastroProdutoContextModelSnapshot : ModelSnapshot
+    [Migration("20200712181045_guidAdicionado2")]
+    partial class guidAdicionado2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
