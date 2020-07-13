@@ -15,6 +15,11 @@ services:
     build:
       context: .
       dockerfile: CadastroProduto.Api.Principal/Dockerfile
+    ports:
+        - '5001:443'
+    environment:
+        ASPNETCORE_HTTPS_PORT: 'https://+:5001'
+        
 
   cadastroprodutos.api:
     image: ${DOCKER_REGISTRY-}cadastroprodutosapi
@@ -56,6 +61,17 @@ services:
     build:
       context: .
       dockerfile: CadastroProduto.Worker/Dockerfile
+
+  #frontend:
+  #  container_name: frontend
+  #  restart: always
+  #  build:
+  #    context: ../FrontEnd
+  #    dockerfile: Dockerfile
+  #  expose:
+  #    - "80"
+  #  ports:
+  #    - "8080:8080"
 
 volumes:
   db_volume:

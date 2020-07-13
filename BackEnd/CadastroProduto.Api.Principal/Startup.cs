@@ -29,7 +29,8 @@ namespace CadastroProduto.Api.Principal
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddCors();
+            services.AddControllers().AddNewtonsoftJson();
 
             services.AddDbContext<CadastroProdutoContext>(options => options.UseNpgsql(Configuration["ConnectionString"]));
 
@@ -77,6 +78,8 @@ namespace CadastroProduto.Api.Principal
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseHttpsRedirection();
 

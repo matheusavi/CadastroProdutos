@@ -1,0 +1,22 @@
+<template>
+    <h4>Produto</h4>
+    <form class="form" submit.trigger="criarProduto()">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="Nome">Nome</label>
+                <input type="text" id="Nome" Nome="Nome" class="form-control" placeholder="Smartphone"
+                    value.bind="nome & validate">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="Estoque">Preço</label>
+                <input type="text" id="Preco" class="form-control" placeholder="25.90" value.bind="preco & validate">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="Estoque">Estoque</label>
+                <input type="text" id="Estoque" class="form-control" placeholder="40" value.bind="estoque & validate">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+
+</template>
