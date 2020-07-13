@@ -62,16 +62,16 @@ services:
       context: .
       dockerfile: CadastroProduto.Worker/Dockerfile
 
-  #frontend:
-  #  container_name: frontend
-  #  restart: always
-  #  build:
-  #    context: ../FrontEnd
-  #    dockerfile: Dockerfile
-  #  expose:
-  #    - "80"
-  #  ports:
-  #    - "8080:8080"
+  frontend:
+    container_name: frontend
+    restart: always
+    build:
+      context: ../FrontEnd
+      dockerfile: Dockerfile
+    expose:
+      - "80"
+    ports:
+      - "8080:8080"
 
 volumes:
   db_volume:

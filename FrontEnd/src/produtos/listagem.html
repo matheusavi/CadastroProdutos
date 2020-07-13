@@ -14,7 +14,6 @@
                 <th scope="col">Preço</th>
                 <th scope="col">Estoque</th>
                 <th scope="col"></th>
-                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -24,9 +23,6 @@
                 <td>${produto.estoque}</td>
                 <td>
                     <button class="btn btn-primary" click.delegate="editarProduto(produto.id)">Editar</button>
-                </td>
-                <td>
-                    <button class="btn btn-danger" click.delegate="excluirProduto(produto.id)">Excluir</button>
                 </td>
             </tr>
         </tbody>

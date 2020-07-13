@@ -6,7 +6,6 @@ import { BootstrapFormRenderer } from "../utilities/bootstrap-form-renderer";
 import { ProdutoService } from 'services/ProdutoService';
 import { DialogService } from 'aurelia-dialog';
 import { Dialog } from 'dialog';
-import { NumericDictionary } from 'lodash';
 
 @autoinject
 export class Cadastrar {
