@@ -20,4 +20,8 @@ Conecta-se com a API do backend para criar, listar e editar os produtos.
 
 Para executar a aplicação basta ter o docker instalado em sua máquina, entrar na pasta backend e executar o comando `docker-compose up`.   
 **Isso vai levar um bom tempo**. Todas as aplicações necessárias serão iniciadas (incluindo message brokers, banco de dados e afins).  
+Também é possível abrir a solução localizada em Backend no visual studio e executar ela a partir do docker compose.  
 Após isso basta acessar o endereço localhost:8080 em seu navegador que você terá acesso a aplicação frontend.
+  
+
+⚠️ Na primeira execução é possível que o container da API não suba devido a demora para baixar todo o ambiente, basta executar novamente que o processo será rápido.  
