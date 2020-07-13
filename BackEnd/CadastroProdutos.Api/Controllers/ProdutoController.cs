@@ -20,6 +20,28 @@ namespace CadastroProdutos.Api.Controllers
             _logger = logger;
         }
 
+        [HttpGet("{guid}")]
+        public async Task<ActionResult<Produto>> GetProduto(Guid guid)
+        {
+            try
+            {
+                var request = await _context.Produtos.FindAsync(Builders<Produto>.Filter.Eq(x => x.Guid, guid));
+                var produto = await request.FirstOrDefaultAsync();
+                if (produto == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(produto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ocorreu um erro ao obter o produto");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao obter o produto");
+            }
+        }
+
+
         [HttpPut]
         public async Task<IActionResult> PutProduto([FromBody]Produto produto)
         {

@@ -6,6 +6,8 @@ namespace CadastroProdutos.Api
 {
     public class Produto
     {
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public Guid Guid { get; set; }
         public string Nome { get; set; }
         public decimal Preco { get; set; }
