@@ -1,0 +1,34 @@
+<template>
+    <div class="row">
+        <div class="col-md">
+            <h3>Listagem de produtos</h3>
+        </div>
+        <div>
+            <a class="btn btn-success" href="Cadastrar">Cadastrar novo produto</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Preço</th>
+                <th scope="col">Estoque</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr repeat.for="produto of produtos">
+                <td>${produto.nome}</th>
+                <td>${produto.preco}</td>
+                <td>${produto.estoque}</td>
+                <td>
+                    <button class="btn btn-primary">Editar</button>
+                </td>
+                <td>
+                    <button class="btn btn-danger" click.delegate="excluirProduto(produto.id)">Excluir</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</template>

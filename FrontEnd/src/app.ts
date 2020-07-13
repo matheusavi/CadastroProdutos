@@ -9,7 +9,8 @@ export class App {
         config.options.pushState = true;
         config.map([
             { route: ['', 'cadastrar'], name: 'cadastrar', moduleId: PLATFORM.moduleName('produtos/cadastrar') },
-            { route: 'details/*id', name: 'details', moduleId: PLATFORM.moduleName('produtos/details'), nav: true, title: 'details', href: "#details" }
+            { route: 'details/*id', name: 'details', moduleId: PLATFORM.moduleName('produtos/details'), nav: true, title: 'details', href: "#details" },
+            { route: 'listagem', name: 'listagem', moduleId: PLATFORM.moduleName('produtos/listagem'), nav: true, title: 'listagem', href: "#listagem" }
         ]);
     }
 }

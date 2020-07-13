@@ -4,7 +4,6 @@ import { Produto } from 'models/produto';
 
 @autoinject
 export class ProdutoService {
-
     private http: HttpClient;
 
     constructor(http: HttpClient) {
@@ -65,6 +64,56 @@ export class ProdutoService {
 
         if (responseBody == undefined || responseBody == null || responseBody == "")
             responseBody = response.status + ': ' + 'Ocorreu um erro ao obter o produto';
+
+        return {
+            response: responseBody,
+            error: !response.ok,
+            status: response.status
+        };
+    }
+
+    public async getAll() {
+        let response = await this.http.fetch('produto/todos', {
+            method: 'get'
+        });
+
+        let responseBody;
+
+        try {
+            responseBody = await response.json();
+        }
+        catch (error) {
+            console.log('Error getting the response.' + error);
+            responseBody = response.statusText;
+        }
+
+        if (responseBody == undefined || responseBody == null || responseBody == "")
+            responseBody = response.status + ': ' + 'Ocorreu um erro ao obter os produtos';
+
+        return {
+            response: responseBody,
+            error: !response.ok,
+            status: response.status
+        };
+    }
+
+    public async delete(id: any) {
+        let response = await this.http.fetch('produto/' + id, {
+            method: 'delete'
+        });
+
+        let responseBody;
+
+        try {
+            responseBody = await response.json();
+        }
+        catch (error) {
+            console.log('Error getting the response.' + error);
+            responseBody = response.statusText;
+        }
+
+        if (responseBody == undefined || responseBody == null || responseBody == "")
+            responseBody = response.status + ': ' + 'Ocorreu um erro ao deletar o produto';
 
         return {
             response: responseBody,
