@@ -23,7 +23,7 @@
                 <td>${produto.preco}</td>
                 <td>${produto.estoque}</td>
                 <td>
-                    <button class="btn btn-primary">Editar</button>
+                    <button class="btn btn-primary" click.delegate="editarProduto(produto.id)">Editar</button>
                 </td>
                 <td>
                     <button class="btn btn-danger" click.delegate="excluirProduto(produto.id)">Excluir</button>

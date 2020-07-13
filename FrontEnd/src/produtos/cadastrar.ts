@@ -6,17 +6,20 @@ import { BootstrapFormRenderer } from "../utilities/bootstrap-form-renderer";
 import { ProdutoService } from 'services/ProdutoService';
 import { DialogService } from 'aurelia-dialog';
 import { Dialog } from 'dialog';
+import { NumericDictionary } from 'lodash';
 
 @autoinject
 export class Cadastrar {
     controller: ValidationController;
     produtoService: ProdutoService;
-    nome: string;
-    preco: number;
-    estoque: number;
     dialogService: DialogService;
     valid: boolean;
     router: Router;
+
+    id: number;
+    nome: string;
+    preco: number;
+    estoque: number;
 
     constructor(
         controllerFactory: ValidationControllerFactory,
@@ -53,26 +56,63 @@ export class Cadastrar {
     criarProduto() {
         this.controller.validate().then(async result => {
             if (result.valid) {
-                let produto = new Produto(this.nome, this.preco, this.estoque);
-                let response = await this.produtoService.create(produto);
-                if (!response.error) {
-                    this.router.navigateToRoute("details", { id: response.response.id });
-                } else if (response.status == 400) {
-                    response.response.forEach(element => {
-                        this.controller.addError(element.error, this, this.toCamelCase(element.property));
-                    });
+                if (this.id > 0) {
+                    let produto = new Produto(this.nome, this.preco, this.estoque);
+                    produto.id = this.id;
+                    let response = await this.produtoService.update(produto);
+                    if (!response.error) {
+                        this.router.navigateToRoute("details", { id: this.id });
+                    } else if (response.status == 400) {
+                        response.response.forEach(element => {
+                            this.controller.addError(element.error, this, this.toCamelCase(element.property));
+                        });
+                    } else {
+                        this.dialogService.open({
+                            viewModel: Dialog,
+                            model: {
+                                message: response.response,
+                                okAction: () => { },
+                                cancelAction: () => { }
+                            }
+                        });
+                    }
                 } else {
-                    this.dialogService.open({
-                        viewModel: Dialog,
-                        model: {
-                            message: response.response,
-                            okAction: () => { },
-                            cancelAction: () => { }
-                        }
-                    });
+                    let produto = new Produto(this.nome, this.preco, this.estoque);
+                    let response = await this.produtoService.create(produto);
+                    if (!response.error) {
+                        this.router.navigateToRoute("details", { id: response.response.id });
+                    } else if (response.status == 400) {
+                        response.response.forEach(element => {
+                            this.controller.addError(element.error, this, this.toCamelCase(element.property));
+                        });
+                    } else {
+                        this.dialogService.open({
+                            viewModel: Dialog,
+                            model: {
+                                message: response.response,
+                                okAction: () => { },
+                                cancelAction: () => { }
+                            }
+                        });
+                    }
                 }
             }
         });
+    }
+
+    activate(params, routeConfig) {
+        if (params.id > 0) {
+            this.produtoService.get(params.id).then((response) => {
+                if (!response.error) {
+                    this.id = params.id;
+                    this.nome = response.response.nome;
+                    this.preco = response.response.preco;
+                    this.estoque = response.response.estoque;
+                } else {
+                    alert('Ocorreu um erro ao editar o produto');
+                }
+            });
+        }
     }
 
     toCamelCase(value: String) {

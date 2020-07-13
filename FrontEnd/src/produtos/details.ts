@@ -16,7 +16,5 @@ export class Details {
             if (!response.error)
                 this.produto = response.response;
         });
-
-
     }
 }
