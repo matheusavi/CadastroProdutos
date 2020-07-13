@@ -28,9 +28,7 @@ namespace CadastroProdutos.Api.Controllers
                 var request = await _context.Produtos.FindAsync(Builders<Produto>.Filter.Eq(x => x.Guid, guid));
                 var produto = await request.FirstOrDefaultAsync();
                 if (produto == null)
-                {
                     return NotFound();
-                }
 
                 return Ok(produto);
             }
@@ -47,7 +45,16 @@ namespace CadastroProdutos.Api.Controllers
         {
             try
             {
-                var result = await _context.Produtos.ReplaceOneAsync(Builders<Produto>.Filter.Eq(x => x.Guid, produto.Guid), produto);
+                var request = await _context.Produtos.FindAsync(Builders<Produto>.Filter.Eq(x => x.Guid, produto.Guid));
+
+                var produtoBanco = await request.FirstOrDefaultAsync();
+
+                if (produto == null)
+                    return NotFound();
+
+                produtoBanco.UpdateInfo(produto.Nome, produto.Preco, produto.Estoque);
+
+                var result = await _context.Produtos.ReplaceOneAsync(Builders<Produto>.Filter.Eq(x => x.Guid, produto.Guid), produtoBanco);
 
                 if (result.ModifiedCount == 0)
                     return NotFound();

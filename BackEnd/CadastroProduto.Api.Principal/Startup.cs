@@ -31,7 +31,6 @@ namespace CadastroProduto.Api.Principal
         {
             services.AddControllers();
 
-
             services.AddDbContext<CadastroProdutoContext>(options => options.UseNpgsql(Configuration["ConnectionString"]));
 
             services.AddAutoMapper(x => x.CreateMap<Produto, ProdutoDto>(), AppDomain.CurrentDomain.GetAssemblies());
@@ -61,7 +60,6 @@ namespace CadastroProduto.Api.Principal
                         });
                     })
                 );
-                //x.UsingRabbitMq(x => x.);
             });
 
             services.AddMassTransitHostedService();

@@ -12,5 +12,12 @@ namespace CadastroProdutos.Api
         public string Nome { get; set; }
         public decimal Preco { get; set; }
         public long Estoque { get; set; }
+
+        public void UpdateInfo(string nome, decimal preco, long estoque)
+        {
+            Nome = nome;
+            Preco = preco;
+            Estoque = estoque;
+        }
     }
 }
