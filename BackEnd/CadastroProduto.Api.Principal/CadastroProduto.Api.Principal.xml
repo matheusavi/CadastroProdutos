@@ -17,6 +17,14 @@
             <param name="queries"></param>
             <param name="logger"></param>
         </member>
+        <member name="M:CadastroProduto.Api.Principal.Controllers.ProdutoController.GetProduto">
+            <summary>
+            Obter todos os produtos
+            </summary>
+            <response code="200">Produto encontrado</response>
+            <response code="500">Ocorreu um erro ao encontrar o produto</response>
+            <returns>O produto</returns>
+        </member>
         <member name="M:CadastroProduto.Api.Principal.Controllers.ProdutoController.GetProduto(System.Int64)">
             <summary>
             Obter um produto por Id

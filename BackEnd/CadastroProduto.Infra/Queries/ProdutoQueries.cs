@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using CadastroProduto.CQS;
 using CadastroProduto.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CadastroProduto.Infra
@@ -21,5 +23,11 @@ namespace CadastroProduto.Infra
             var entity = await _dbContext.Set<Produto>().FindAsync(id);
             return _mapper.Map<ProdutoDto>(entity);
         }
+
+        public Task<List<ProdutoDto>> GetAllAsync()
+            => _dbContext
+                .Set<Produto>()
+                .ProjectTo<ProdutoDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
     }
 }

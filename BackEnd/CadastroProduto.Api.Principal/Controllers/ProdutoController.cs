@@ -38,6 +38,32 @@ namespace CadastroProduto.Api.Principal.Controllers
             _logger = logger;
         }
 
+
+        /// <summary>
+        /// Obter todos os produtos
+        /// </summary>
+        /// <response code="200">Produto encontrado</response>
+        /// <response code="500">Ocorreu um erro ao encontrar o produto</response>
+        /// <returns>O produto</returns>
+        [HttpGet("todos")]
+        [ProducesResponseType(typeof(ProdutoDto), 200)]
+        [ProducesResponseType(500)]
+        public async Task<ActionResult<List<ProdutoDto>>> GetProduto()
+        {
+            try
+            {
+                var produtos = await _queries.GetAllAsync();
+
+
+                return Ok(produtos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ocorreu um erro ao obter os produtos");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao obter os produtos");
+            }
+        }
+
         /// <summary>
         /// Obter um produto por Id
         /// </summary>
