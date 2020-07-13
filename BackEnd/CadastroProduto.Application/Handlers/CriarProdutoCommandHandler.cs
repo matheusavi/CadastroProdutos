@@ -29,7 +29,7 @@ namespace CadastroProduto.Application
             await _validator.ValidateAndThrowAsync(request);
 
             var entity = _repository.Add(new Produto(request.Nome, request.Preco, request.Estoque));
-            await _repository.UnitOfWork.SaveChangesAsync();
+            await _repository.UnitOfWork.SaveAggregateEntitiesAsync();
             return _mapper.Map<ProdutoDto>(entity);
         }
     }

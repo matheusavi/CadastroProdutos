@@ -25,7 +25,7 @@ namespace CadastroProduto.Application
             if (entity == null)
                 return false;
             entity.UpdateInfo(request.Nome, request.Preco, request.Estoque);
-            await _repository.UnitOfWork.SaveChangesAsync();
+            await _repository.UnitOfWork.SaveAggregateEntitiesAsync();
             return true;
         }
     }

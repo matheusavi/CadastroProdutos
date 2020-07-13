@@ -51,17 +51,17 @@ namespace CadastroProduto.Api.Principal
 
             services.AddMassTransit(x =>
             {
-                //x.AddBus(k =>
-                // Bus.Factory.CreateUsingRabbitMq(j =>
-                //    {
-                //        j.Host("localhost", y =>
-                //        {
-                //            y.Username("test");
-                //            y.Password("test");
-                //        });
-                //    })
-                //);
-                x.UsingRabbitMq();
+                x.AddBus(k =>
+                 Bus.Factory.CreateUsingRabbitMq(j =>
+                    {
+                        j.Host("rabbitmq", y =>
+                        {
+                            y.Username("guest");
+                            y.Password("guest");
+                        });
+                    })
+                );
+                //x.UsingRabbitMq(x => x.);
             });
 
             services.AddMassTransitHostedService();

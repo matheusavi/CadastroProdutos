@@ -1,19 +1,18 @@
-﻿using System;
+﻿using CadastroProduto.CQS;
+using System;
 
 namespace CadastroProduto.Domain
 {
-    public class Produto
+    public class Produto : AggregateRoot
     {
-        public Produto()
-        {
-
-        }
+        private Produto() { }
         public Produto(string nome, decimal preco, long estoque)
         {
             Nome = nome;
             Preco = preco;
             Estoque = estoque;
             Guid = Guid.NewGuid();
+            AddDomainEvent(new ProdutoCriado(nome, preco, estoque, Guid));
         }
 
         public long Id { get; private set; }
@@ -27,6 +26,12 @@ namespace CadastroProduto.Domain
             Nome = nome;
             Preco = preco;
             Estoque = estoque;
+            AddDomainEvent(new ProdutoAlterado(nome, preco, estoque, Guid));
+        }
+
+        public void Excluir()
+        {
+            AddDomainEvent(new ProdutoExcluido(Guid));
         }
     }
 }

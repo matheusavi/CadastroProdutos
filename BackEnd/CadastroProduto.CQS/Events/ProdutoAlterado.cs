@@ -2,9 +2,9 @@
 
 namespace CadastroProduto.CQS
 {
-    public class ProdutoCriado : IDomainEvent
+    public class ProdutoAlterado : IDomainEvent
     {
-        public ProdutoCriado(string nome, decimal preco, long estoque, Guid guid)
+        public ProdutoAlterado(string nome, decimal preco, long estoque, Guid guid)
         {
             Nome = nome;
             Preco = preco;

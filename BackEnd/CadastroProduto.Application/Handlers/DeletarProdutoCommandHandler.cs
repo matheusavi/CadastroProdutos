@@ -20,7 +20,8 @@ namespace CadastroProduto.Application
         public async Task<ProdutoDto> Handle(DeletarProdutoCommand request, CancellationToken cancellationToken)
         {
             var entity = await _repository.DeleteAsync(request.Id);
-            await _repository.UnitOfWork.SaveChangesAsync();
+            entity.Excluir();
+            await _repository.UnitOfWork.SaveAggregateEntitiesAsync();
             return _mapper.Map<ProdutoDto>(entity);
         }
     }

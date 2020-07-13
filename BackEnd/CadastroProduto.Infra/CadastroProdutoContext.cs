@@ -1,8 +1,9 @@
-﻿using CadastroProduto.CQS;
-using CadastroProduto.Domain;
+﻿using CadastroProduto.Domain;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,34 +19,27 @@ namespace CadastroProduto.Infra
             _publishEndpoint = publishEndpoint;
         }
 
-        public override int SaveChanges()
-        {
-            return base.SaveChanges();
-        }
+        public Task<int> SaveAggregateEntitiesAsync(CancellationToken cancellationToken = default) 
+            => PublishDomainEvents(base.SaveChangesAsync(cancellationToken));
 
-        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        private async Task<int> PublishDomainEvents(Task<int> task)
         {
-            return base.SaveChanges(acceptAllChangesOnSuccess);
-        }
+            List<object> entities = ChangeTracker
+               .Entries<AggregateRoot>()
+               .Where(x => x.Entity.DomainEvents != null && x.Entity.DomainEvents.Any())
+               .SelectMany(x => x.Entity.DomainEvents)
+               .Select(x => (object)x)
+               .ToList();
 
-        public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
+            var retorno = await task;
 
-            try
+            foreach (var item in entities)
             {
-                //await _publishEndpoint.Publish<ProdutoCriado>(new ProdutoCriado("nome", 1, 1, Guid.NewGuid()));
+                var type = item.GetType();
+                await _publishEndpoint.Publish(item);
             }
-            catch (Exception ex)
-            {
 
-            }
-            return await base.SaveChangesAsync(cancellationToken);
-
-        }
-
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        {
-            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            return retorno;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

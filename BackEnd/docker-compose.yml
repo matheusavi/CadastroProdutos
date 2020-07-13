@@ -11,6 +11,7 @@ services:
     image: ${DOCKER_REGISTRY-}cadastroprodutoapiprincipal
     depends_on:
         - "postgres_image"
+        - "rabbitmq"
     build:
       context: .
       dockerfile: CadastroProduto.Api.Principal/Dockerfile

@@ -21,39 +21,33 @@ namespace CadastroProduto.Worker
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddMassTransit(x =>
+                    services.AddMassTransit(serviceCollectionConfigurator =>
                     {
-                        x.AddConsumer<EventConsumer>();
+                        serviceCollectionConfigurator.AddConsumer<EventConsumer>();
 
-                        //x.AddBus(serviceProvider =>
-                        //    Bus.Factory.CreateUsingRabbitMq(j =>
-                        //    {
-                        //        j.ReceiveEndpoint("event-listener", e =>
-                        //            {
-                        //                e.ConfigureConsumer<EventConsumer>(serviceProvider);
-                        //            });
-                        //        j.Host("localhost", y =>
-                        //        {
-                        //            y.Username("test");
-                        //            y.Password("test");
-                        //        });
-                        //    })
-                        //);
-
-                        x.UsingRabbitMq((context, cfg) =>
-                        {
-                            cfg.ReceiveEndpoint("event-listener", e =>
+                        serviceCollectionConfigurator.AddBus(serviceProvider =>
+                            Bus.Factory.CreateUsingRabbitMq(busConfigurator =>
                             {
-                                e.ConfigureConsumer<EventConsumer>(context);
-                            });
-                        });
+                                busConfigurator.ReceiveEndpoint("event-listener", endpointConfigurator =>
+                                    {
+                                        endpointConfigurator.ConfigureConsumer<EventConsumer>(serviceProvider);
+                                    });
+                                busConfigurator.Host("rabbitmq", hostConfigurator =>
+                                {
+                                    hostConfigurator.Username("guest");
+                                    hostConfigurator.Password("guest");
+                                });
+                            })
+                        );
                     });
 
                     services.AddMassTransitHostedService();
                 });
 
         class EventConsumer :
-        IConsumer<ProdutoCriado>
+        IConsumer<ProdutoCriado>,
+            IConsumer<ProdutoAlterado>,
+            IConsumer<ProdutoExcluido>
         {
             ILogger<EventConsumer> _logger;
 
@@ -63,6 +57,16 @@ namespace CadastroProduto.Worker
             }
 
             public async Task Consume(ConsumeContext<ProdutoCriado> context)
+            {
+                _logger.LogInformation("Value: {Value}", context.Message.Guid);
+            }
+
+            public async Task Consume(ConsumeContext<ProdutoAlterado> context)
+            {
+                _logger.LogInformation("Value: {Value}", context.Message.Guid);
+            }
+
+            public async Task Consume(ConsumeContext<ProdutoExcluido> context)
             {
                 _logger.LogInformation("Value: {Value}", context.Message.Guid);
             }

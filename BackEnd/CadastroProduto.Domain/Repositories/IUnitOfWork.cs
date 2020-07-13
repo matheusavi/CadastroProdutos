@@ -5,6 +5,6 @@ namespace CadastroProduto.Domain
 {
     public interface IUnitOfWork
     {
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        Task<int> SaveAggregateEntitiesAsync(CancellationToken cancellationToken = default);
     }
 }
