@@ -1,5 +1,4 @@
-# Cadastro de produtos
-Uma aplicação de cadastro de produtos simples.  
+Uma aplicação de cadastro de produtos simples com sincronização.  
 A aplicação está dividida em 4 projetos, sendo eles:
   
 1 - CadastroProduto.Api.Principal  
