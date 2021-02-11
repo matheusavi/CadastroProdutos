@@ -1,4 +1,4 @@
-Uma aplicação de cadastro de produtos simples com sincronização.  
+Uma aplicação de cadastro de produtos simples com sincronização utilizando mensageria.  
 A aplicação está dividida em 4 projetos, sendo eles:
   
 1 - CadastroProduto.Api.Principal  
